@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAKHRA CAFE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Auth Pages --> 
+        <div id="authPage" class="page">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <h1>☕ WAKHRA CAFE</h1>
+                    
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" data-tab="login">Login</button>
+                        <button class="tab-btn" data-tab="register">Register</button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" class="auth-form">
+                        <input type="text" placeholder="Username" id="loginUsername" required>
+                        <input type="password" placeholder="Password" id="loginPassword" required>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <p id="loginError" class="error"></p>
+                    </form>
+                    
+                    <!-- Register Form -->
+                    <form id="registerForm" class="auth-form hidden">
+                        <input type="text" placeholder="Username" id="regUsername" required>
+                        <input type="email" placeholder="Email" id="regEmail" required>
+                        <input type="password" placeholder="Password" id="regPassword" required>
+                        <input type="password" placeholder="Confirm Password" id="regConfirmPassword" required>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <p id="registerError" class="error"></p>
+                    </form>
+                    
+                    <div class="demo-note">
+                        <p><strong>Demo Admin Account:</strong></p>
+                        <p>Username: <code>admin</code></p>
+                        <p>Password: <code>admin123</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App (after login) -->
+        <div id="mainApp" class="page hidden">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="navbar-brand">☕ Wakhra cafe</div>
+                <div class="navbar-menu">
+                    <button class="nav-btn" data-page="menu">Menu</button>
+                    <button class="nav-btn" data-page="orders">Orders</button>
+                    <button class="nav-btn admin-only hidden" data-page="admin">Admin</button>
+                    <button class="nav-btn" id="logoutBtn">Logout</button>
+                </div>
+            </nav>
+
+            <div class="main-content">
+                <!-- Menu Page -->
+                <div id="menuPage" class="content-page">
+                    <div class="page-header">
+                        <h2>Menu</h2>
+                        <button class="btn btn-primary admin-only hidden" id="addMenuItemBtn">+ Add Item</button>
+                    </div>
+                    
+                    <div class="filters">
+                        <button class="filter-btn active" data-category="all">All</button>
+                        <button class="filter-btn" data-category="Coffee">Coffee</button>
+                        <button class="filter-btn" data-category="Food">Food</button>
+                        <button class="filter-btn" data-category="Dessert">Dessert</button>
+                        <button class="filter-btn" data-category="Beverage">Beverage</button>
+                    </div>
+                    
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Menu items will be loaded here -->
+                    </div>
+                    
+                    <!-- Cart -->
+                    <div id="cartSection" class="cart-section">
+                        <h3>Cart</h3>
+                        <div id="cartItems" class="cart-items">
+                            <!-- Cart items will be displayed here -->
+                        </div>
+                        <div class="cart-summary">
+                            <div class="summary-row">
+                                <span>Total:</span>
+                                <span id="cartTotal">₹0.00</span>
+                            </div>
+                        </div>
+                        <div class="payment-method">
+                            <label>Payment Method:</label>
+                            <select id="paymentMethod">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="upi">UPI</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success" id="placeOrderBtn">Place Order</button>
+                        <button class="btn btn-secondary" id="clearCartBtn">Clear Cart</button>
+                    </div>
+                </div>
+
+                <!-- Orders Page -->
+                <div id="ordersPage" class="content-page hidden">
+                    <div class="page-header">
+                        <h2>Orders</h2>
+                    </div>
+                    
+                    <div class="orders-list" id="ordersList">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Admin Page -->
+                <div id="adminPage" class="content-page hidden admin-only">
+                    <div class="page-header">
+                        <h2>Admin Dashboard</h2>
+                    </div>
+                    
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" data-tab="dashboard">Dashboard</button>
+                        <button class="admin-tab" data-tab="orders">Manage Orders</button>
+                        <button class="admin-tab" data-tab="menu">Manage Menu</button>
+                    </div>
+                    
+                    <!-- Dashboard Tab -->
+                    <div id="dashboardTab" class="admin-tab-content">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h4>Total Orders</h4>
+                                <p id="totalOrders" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Completed Orders</h4>
+                                <p id="completedOrders" class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Total Revenue</h4>
+                                <p id="totalRevenue" class="stat-value">₹0.00</p>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Menu Items</h4>
+                                <p id="totalItems" class="stat-value">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <h3>Sales by Category</h3>
+                            <div id="salesChart" class="sales-chart">
+                                <!-- Sales data will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Management Tab -->
+                    <div id="ordersTab" class="admin-tab-content hidden">
+                        <div class="orders-list" id="adminOrdersList">
+                            <!-- Admin orders view -->
+                        </div>
+                    </div>
+                    
+                    <!-- Menu Management Tab -->
+                    <div id="menuTab" class="admin-tab-content hidden">
+                        <button class="btn btn-primary" id="addMenuItemAdminBtn">+ Add Menu Item</button>
+                        <div class="menu-list" id="adminMenuList">
+                            <!-- Menu items management -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Order Details</h2>
+            <div id="orderDetailsContent">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Menu Item Modal -->
+    <div id="addMenuItemModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add Menu Item</h2>
+            <form id="addMenuItemForm">
+                <input type="text" placeholder="Item Name" id="itemName" required>
+                <textarea placeholder="Description" id="itemDescription"></textarea>
+                <select id="itemCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Food">Food</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
+                <input type="number" placeholder="Price" id="itemPrice" step="0.01" required>
+                <button type="submit" class="btn btn-primary">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Menu Item Modal -->
+    <div id="editMenuItemModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Menu Item</h2>
+            <form id="editMenuItemForm">
+                <input type="hidden" id="editItemId">
+                <input type="text" placeholder="Item Name" id="editItemName" required>
+                <textarea placeholder="Description" id="editItemDescription"></textarea>
+                <select id="editItemCategory" required>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Food">Food</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
+                <input type="number" placeholder="Price" id="editItemPrice" step="0.01" required>
+                <label>
+                    <input type="checkbox" id="editItemAvailable">
+                    Available
+                </label>
+                <button type="submit" class="btn btn-primary">Update Item</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>
